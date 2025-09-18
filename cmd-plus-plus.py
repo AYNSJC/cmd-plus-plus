@@ -16,7 +16,6 @@ def start_cmd():
     current_line = 0
 
     current_directory = os.getcwd()
-    print(f"{border}Current working directory: {current_directory}")
 
 def change_directory(command:list[str], token_no:int):
     global current_directory
@@ -50,6 +49,8 @@ def print_sequence(sequence:list[str], showing_files:bool):
         for j in range(0, len(file_display_sequence), 1):
             print(f"{border}{file_display_sequence[j]}")
 
+def create_new_directory(command:list[str], token_no:int):
+    os.mkdir(command[token_no + 1])
 
 while running:
     current_command = input(f"{current_line:<3}. | {current_directory}>")
@@ -58,15 +59,19 @@ while running:
     tokens = current_command.split(" ")
 
     for i in range(0, len(tokens), 1):
-        if(tokens[i] == "cd" or tokens[i] == "goto"):
-            change_directory(tokens, i)
-
-        if(tokens[i] == "ls" or tokens[i] == "show"):
-            list_directory_contents(tokens, i)
-
-        if(tokens[i] == "cls" or tokens[i] == "clear"):
-            os.system("cls")
-            start_cmd()
-
-        if(tokens[i] == "quit"):
-            running = False
+        match tokens[i]:
+            case "cd" | "goto":
+                change_directory(tokens, i)
+                break
+            case "ls" | "show":
+                list_directory_contents(tokens, i)
+                break
+            case "mkdir" | "new":
+                create_new_directory(tokens, i)
+                break
+            case "cls" | "clear":
+                os.system("cls")
+                start_cmd()
+                break
+            case "quit":
+                running = False
