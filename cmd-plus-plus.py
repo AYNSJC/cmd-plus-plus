@@ -51,6 +51,11 @@ def print_sequence(sequence:list[str], showing_files:bool):
 
 def create_new_directory(command:list[str], token_no:int):
     os.mkdir(command[token_no + 1])
+    print(f"{border}Success!")
+
+def remove_directory(command:list[str], token_no:int):
+    os.rmdir(command[token_no + 1])
+    print(f"{border}Success!")
 
 while running:
     current_command = input(f"{current_line:<3}. | {current_directory}>")
@@ -66,9 +71,11 @@ while running:
             case "ls" | "show":
                 list_directory_contents(tokens, i)
                 break
-            case "mkdir" | "new":
+            case "mkdir" | "create":
                 create_new_directory(tokens, i)
                 break
+            case "rmdir" | "remove":
+                remove_directory(tokens, i)
             case "cls" | "clear":
                 os.system("cls")
                 start_cmd()
