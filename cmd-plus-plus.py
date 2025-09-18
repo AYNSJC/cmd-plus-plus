@@ -10,9 +10,13 @@ current_directory = os.getcwd()
 
 def start_cmd():
     global running
+    global current_directory
+    global current_line
+
+    os.system("cls")
+
     running = True
 
-    global current_line
     current_line = 0
 
     current_directory = os.getcwd()
@@ -57,6 +61,10 @@ def remove_directory(command:list[str], token_no:int):
     os.rmdir(command[token_no + 1])
     print(f"{border}Success!")
 
+def rename_directory(command:str, token_no:int):
+    os.rename(command[token_no + 1], command[token_no + 2])
+    print(f"{border} Success!")
+
 while running:
     current_command = input(f"{current_line:<3}. | {current_directory}>")
     current_line += 1
@@ -76,8 +84,11 @@ while running:
                 break
             case "rmdir" | "remove":
                 remove_directory(tokens, i)
+                break
+            case "ren" | "rename":
+                rename_directory(tokens, i)
+                break
             case "cls" | "clear":
-                os.system("cls")
                 start_cmd()
                 break
             case "quit":
