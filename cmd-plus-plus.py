@@ -21,15 +21,15 @@ def start_cmd():
 
     current_directory = os.getcwd()
 
-def change_directory(command:list[str], token_no:int):
+def change_directory(command:list[str]):
     global current_directory
-    os.chdir(command[token_no + 1])
+    os.chdir(" ".join(command[1:]))
     current_directory = os.getcwd()
     print(f"{border}{current_directory}")
 
 def list_directory_contents(command:list[str], token_no:int):
     if(token_no + 1 < len(command)):
-        files = os.listdir(command[token_no + 1])
+        files = os.listdir(" ".join(command[1:]))
         print_sequence(files, True)
     else:
         files = os.listdir(os.getcwd())
@@ -53,17 +53,19 @@ def print_sequence(sequence:list[str], showing_files:bool):
         for j in range(0, len(file_display_sequence), 1):
             print(f"{border}{file_display_sequence[j]}")
 
-def create_new_directory(command:list[str], token_no:int):
-    os.mkdir(command[token_no + 1])
+def create_new_directory(command:list[str]):
+    os.mkdir(" ".join(command[1:]))
     print(f"{border}Success!")
 
-def remove_directory(command:list[str], token_no:int):
-    os.rmdir(command[token_no + 1])
+def remove_directory(command:list[str]):
+    os.rmdir(" ".join(command[1:]))
     print(f"{border}Success!")
 
-def rename_directory(command:str, token_no:int):
-    os.rename(command[token_no + 1], command[token_no + 2])
-    print(f"{border} Success!")
+def rename_directory(command:str):
+    tokens = command.split('"')
+    os.rename(tokens[1], tokens[3])
+    print(f"{border}Success!")
+    
 
 while running:
     current_command = input(f"{current_line:<3}. | {current_directory}>")
@@ -74,19 +76,23 @@ while running:
     for i in range(0, len(tokens), 1):
         match tokens[i]:
             case "cd" | "goto":
-                change_directory(tokens, i)
+                if(len(tokens) > 1):
+                    change_directory(tokens)
                 break
             case "ls" | "show":
                 list_directory_contents(tokens, i)
                 break
             case "mkdir" | "create":
-                create_new_directory(tokens, i)
+                if(len(tokens) > 1):
+                    create_new_directory(tokens)
                 break
             case "rmdir" | "remove":
-                remove_directory(tokens, i)
+                if(len(tokens) > 1):
+                    remove_directory(tokens)
                 break
             case "ren" | "rename":
-                rename_directory(tokens, i)
+                if(len(tokens) > 3):
+                    rename_directory(current_command)
                 break
             case "cls" | "clear":
                 start_cmd()
