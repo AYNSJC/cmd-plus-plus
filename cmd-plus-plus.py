@@ -75,27 +75,27 @@ while running:
 
     for i in range(0, len(tokens), 1):
         match tokens[i]:
-            case "cd" | "goto":
+            case "cd" | "goto" | "jao":
                 if(len(tokens) > 1):
                     change_directory(tokens)
                 break
-            case "ls" | "show":
+            case "ls" | "show" | "dikhao":
                 list_directory_contents(tokens, i)
                 break
-            case "mkdir" | "create":
+            case "mkdir" | "create" | "banao":
                 if(len(tokens) > 1):
                     create_new_directory(tokens)
                 break
-            case "rmdir" | "remove":
+            case "rmdir" | "remove" | "hatao":
                 if(len(tokens) > 1):
                     remove_directory(tokens)
                 break
-            case "ren" | "rename":
+            case "ren" | "rename" | "badlo":
                 if(len(tokens) > 3):
                     rename_directory(current_command)
                 break
-            case "cls" | "clear":
+            case "cls" | "clear" | "saf":
                 start_cmd()
                 break
-            case "quit":
+            case "quit" | "chod":
                 running = False
