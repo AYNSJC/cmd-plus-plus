@@ -8,6 +8,8 @@ border = "     | "
 
 current_directory = os.getcwd()
 
+custom_commands:list[str] = ["cd", "ls", "mkdir", "rmdir", "ren", "preset","cls", "quit"]
+
 def start_cmd():
     global running
     global current_directory
@@ -66,6 +68,10 @@ def rename_directory(command:str):
     os.rename(tokens[1], tokens[3])
     print(f"{border}Success!")
     
+def make_preset():
+    global custom_commands
+    for i in range(0, len(custom_commands), 1):
+        custom_commands[i] = input(f"{border}{custom_commands[i]}: ")
 
 while running:
     current_command = input(f"{current_line:<3}. | {current_directory}>")
@@ -74,28 +80,23 @@ while running:
     tokens = current_command.split(" ")
 
     for i in range(0, len(tokens), 1):
-        match tokens[i]:
-            case "cd" | "goto" | "jao":
-                if(len(tokens) > 1):
-                    change_directory(tokens)
-                break
-            case "ls" | "show" | "dikhao":
-                list_directory_contents(tokens, i)
-                break
-            case "mkdir" | "create" | "banao":
-                if(len(tokens) > 1):
-                    create_new_directory(tokens)
-                break
-            case "rmdir" | "remove" | "hatao":
-                if(len(tokens) > 1):
-                    remove_directory(tokens)
-                break
-            case "ren" | "rename" | "badlo":
-                if(len(tokens) > 3):
-                    rename_directory(current_command)
-                break
-            case "cls" | "clear" | "saf":
-                start_cmd()
-                break
-            case "quit" | "chod":
-                running = False
+        if tokens[i] in ("cd", "goto", "jao", custom_commands[0]):
+            if len(tokens) > 1:
+                change_directory(tokens)
+        elif tokens[i] in ("ls", "show", "dikhao", custom_commands[1]):
+            list_directory_contents(tokens, i)
+        elif tokens[i] in ("mkdir", "create", "banao", custom_commands[2]):
+            if len(tokens) > 1:
+                create_new_directory(tokens)
+        elif tokens[i] in ("rmdir", "remove", "hatao", custom_commands[3]):
+            if len(tokens) > 1:
+                remove_directory(tokens)
+        elif tokens[i] in ("ren", "rename", "badlo", custom_commands[4]):
+            if len(tokens) > 3:
+                rename_directory(current_command)
+        elif tokens[i] in ("preset", "mera", custom_commands[5]):
+            make_preset()
+        elif tokens[i] in ("cls", "clear", "saf", custom_commands[6]):
+            start_cmd()
+        elif tokens[i] in ("quit", "chod", custom_commands[7]):
+            running = False
