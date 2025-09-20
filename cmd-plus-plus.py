@@ -8,7 +8,7 @@ border = "     | "
 
 current_directory = os.getcwd()
 
-custom_commands:list[str] = ["cd", "ls", "mkdir", "rmdir", "ren", "preset","cls", "quit"]
+custom_commands:list[str] = ["cd", "ls", "mkdir", "rmdir", "ren", "echo", "preset", "cls", "quit"]
 
 def start_cmd():
     global running
@@ -68,6 +68,9 @@ def rename_directory(command:str):
     os.rename(tokens[1], tokens[3])
     print(f"{border}Success!")
     
+def echo_statement(command:list[str]):
+    print(f"{border}{" ".join(command[1:])}")
+
 def make_preset():
     global custom_commands
     for i in range(0, len(custom_commands), 1):
@@ -94,9 +97,11 @@ while running:
         elif tokens[i] in ("ren", "rename", "badlo", custom_commands[4]):
             if len(tokens) > 3:
                 rename_directory(current_command)
-        elif tokens[i] in ("preset", "mera", custom_commands[5]):
+        elif tokens[i] in ("echo", "tell", custom_commands[5]):
+            echo_statement(tokens)
+        elif tokens[i] in ("preset", "mera", custom_commands[6]):
             make_preset()
-        elif tokens[i] in ("cls", "clear", "saf", custom_commands[6]):
+        elif tokens[i] in ("cls", "clear", "saf", custom_commands[7]):
             start_cmd()
-        elif tokens[i] in ("quit", "chod", custom_commands[7]):
+        elif tokens[i] in ("quit", "chod", custom_commands[8]):
             running = False
